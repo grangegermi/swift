@@ -13,7 +13,7 @@ class ViewController: UIViewController {
     var numberSecond: Double = 0
     var check:Bool = false
     var operationMath:Int = 0
-    var label = UILabel(frame: CGRect(x: 20, y: 200, width: 200, height: 60))
+    var label = UILabel(frame: CGRect(x: 20, y: 200, width: 350, height: 60))
     
     let buttonAc = UIButton()
     let buttonPlusMinus = UIButton()
@@ -41,10 +41,9 @@ class ViewController: UIViewController {
         
         view.addSubview(label)
         label.textColor = .white
-        label.text = "  "
+        label.text = " "
         label.font = label.font.withSize(32)
         label.textAlignment = .right
-        
         
         view.addSubview(buttonAc)
         buttonAc.layer.cornerRadius = 60/2
@@ -302,51 +301,55 @@ class ViewController: UIViewController {
 
     
     @objc func number(_ sender:UIButton){
-        numberSecond = Double(label.text!)!
         if check == true {
             label.text = String(sender.tag)
             check = false
         } else {
-            label.text = label.text! + String(sender.tag)
+            label.text = "\((label.text)! + String(sender.tag))"
         }
-
+        numberSecond = Double(label.text!) ?? 0
     }
     
-    @objc func operation (_ sender:UIButton){
-        if label.text != " " && sender.tag != 14 && sender.tag != 15 {
-            numberFirst = Double(label.text!)!
+    @objc func operation (_ sender:UIButton) {
+   
+        if label.text != "" && sender.tag != 14 && sender.tag != 15 {
+            numberFirst = Double(label.text!) ?? 0
+        }
         
-            if sender.tag == 10 {
-                label.text = "+"
-            }
-          else if sender.tag == 11 {
-                label.text = "-"
-                }
-          else if sender.tag == 12 {
-                label.text = "x"
-            }
-           else if sender.tag == 13 {
-                label.text = "/"
-            }
+        if sender.tag == 14 {
+            label.text = ""
+            numberFirst = 0
+            numberSecond = 0
+        }
+        
+        if sender.tag == 13 {
+            label.text = "/"
             operationMath = sender.tag
+            check = true
+        }else if sender.tag == 12 {
+            label.text = "x"
+            operationMath = sender.tag
+            check = true
+        }else if sender.tag == 11 {
+            label.text = "-"
+            operationMath = sender.tag
+            check = true
+        }else if sender.tag == 10 {
+            label.text = "+"
+            operationMath = sender.tag
+            check = true
+        } else if sender.tag == 15 {
+            if operationMath == 13 {
+                label.text = String(numberFirst / numberSecond)
+            }else if operationMath == 10 {
+                label.text = String(numberFirst + numberSecond)
+            }else if operationMath == 11 {
+                label.text = String(numberFirst - numberSecond)
+            }else if operationMath == 12 {
+                label.text = String(numberFirst * numberSecond)
+            }
         }
-            else if sender.tag == 15 {
-            if operationMath == 10  {
-                label.text = "\(numberFirst + numberSecond)"
-            }
-                if operationMath == 11 {
-                label.text = "\(numberFirst - numberSecond)"
-            }
-                if operationMath == 12{
-                label.text = "\(numberFirst * numberSecond)"
-            }
-                if operationMath == 13 {
-                label.text = "\(numberFirst / numberSecond)"
-            }
-            }
-        else if sender.tag == 14 {
-            label.text = " "
-        }
+        
     }
 }
 
